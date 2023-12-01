@@ -1,0 +1,19 @@
+<h1>Sales Raisins</h1>
+
+<%= form_with url: search_sales_raisins_path, method: :get, local: true do |form| %>
+  <%= form.text_field :query, placeholder: "Search..." %>
+  <%= form.submit "Search" %>
+<% end %>
+
+<table>
+  <tbody>
+  <% @sales_raisins.each do |sales_raisin| %>
+    <tr>
+      <td><%= sales_raisin.name %></td>
+      <td><%= sales_raisin.descr%></td>
+      <td><%= sales_raisin.quant %></td>
+      <td><%= sales_raisin.date %></td>
+      <tr>
+  <% end %>
+ </tbody>
+</table>

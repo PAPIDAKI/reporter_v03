@@ -1,0 +1,47 @@
+<h1>Sales</h1>
+<div>
+<%= form_with url: sales_path, method: :get, local: true do |form| %>
+  <%= form.text_field :query, placeholder: "Search..." %>
+  <%= form.submit "Search" %>
+<% end %>
+</div>
+<% if params[:query].present? %>
+<div>
+  <%= @sales.first.name %><br>
+  <%= @sales.first.tel %>  <%= @sales.first.city %>
+  <br>
+  LTkgs <%= remove_decimal(@sales.sum(:quant)) %> since <%=@sales.minimum(:date)%>
+Current Year Sales: <%= Sale.where("date >= ?",Date.today - 365).first%> 
+</div>
+<div>
+<table>
+  <tbody>
+  <% @sales.each do |sales| %>
+    <tr>
+    <td><%= format_date(sales.date)%></td>
+    <td><%= remove_unwanted_text(sales.descr)%></td>
+    <td><%= remove_decimal(sales.quant)%></td>
+    <td><%= sales.ppu%></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+</div>
+<%else%>
+<div>
+  <h2>Most recent sales</h2> 
+  <table>
+    <tbody>
+  <% @recent_sales.each do |recent_sales| %>
+  <tr>
+    <td><%=format_date(recent_sales.date) %></td>
+    <td><%=recent_sales.name %></td>
+    <td><%=remove_decimal(recent_sales.quant) %></td>
+    <td><%=remove_unwanted_text(recent_sales.descr) %></td>
+    <td><%=recent_sales.ppu%></td>
+  </tr>
+<%end%>
+</tbody>
+  </table>
+</div>
+<%end%>
